@@ -66,9 +66,10 @@ Todas las pruebas deben ejecutarse sin errores.
 ---
 
 Autores:
-Calcina Flores Franco
-Almanza Mamani Edgar Raul
-Garcia Valdivia Ronald Pablo
-Viviano Bustamante Adrian Uriel
+CHILO HUILLCA, OSCAR RAUL
+CALCINA FLORES, FRANCO
+VENERO GUEVARA CHRISTIAN HENRY
+ALMANZA MAMANI,EDGAR RAUL
+
 Curso: Pruebas de Software  
 Laboratorio: 05
