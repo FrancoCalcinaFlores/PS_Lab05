@@ -1,0 +1,97 @@
+<div th:replace="~{layout :: layout(~{::section})}">
+    <section>
+        <div class="row g-4">
+            <!-- Registrar Préstamo (RF06) -->
+            <div class="col-lg-4">
+                <div class="card card-custom border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-semibold text-secondary">
+                            <i class="bi bi-plus-circle-fill me-2 text-primary"></i>Registrar Préstamo (RF06)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/prestamos/registrar}" method="post">
+                            <div class="mb-3">
+                                <label for="libroCodigo" class="form-label small fw-medium">Seleccionar Libro</label>
+                                <select id="libroCodigo" name="libroCodigo" class="form-select rounded-3" required>
+                                    <option value="" disabled th:selected="${prevLibro == null}">-- Seleccione un Libro --</option>
+                                    <option th:each="libro : ${libros}" 
+                                            th:value="${libro.codigo}" 
+                                            th:text="${libro.codigo + ' - ' + libro.titulo + ' (Stock: ' + libro.stock + ')'}"
+                                            th:disabled="${!libro.disponible()}"
+                                            th:selected="${libro.codigo == prevLibro}">
+                                        L01 - Clean Code (Stock: 2)
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="usuarioCodigo" class="form-label small fw-medium">Seleccionar Usuario</label>
+                                <select id="usuarioCodigo" name="usuarioCodigo" class="form-select rounded-3" required>
+                                    <option value="" disabled th:selected="${prevUsuario == null}">-- Seleccione un Usuario --</option>
+                                    <option th:each="usuario : ${usuarios}" 
+                                            th:value="${usuario.codigo}" 
+                                            th:text="${usuario.codigo + ' - ' + usuario.nombre}"
+                                            th:selected="${usuario.codigo == prevUsuario}">
+                                        U01 - Juan Pérez
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 btn-custom">
+                                <i class="bi bi-check-lg me-1"></i>Confirmar Préstamo
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listar Préstamos Activos (RF08) -->
+            <div class="col-lg-8">
+                <div class="card card-custom border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-semibold text-secondary">
+                            <i class="bi bi-arrow-left-right me-2 text-warning"></i>Préstamos Activos (RF08)
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">Código Libro</th>
+                                        <th>Título del Libro</th>
+                                        <th>Código Usuario</th>
+                                        <th>Nombre del Usuario</th>
+                                        <th>Fecha de Préstamo</th>
+                                        <th class="text-end pe-4">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="prestamo : ${prestamosActivos}">
+                                        <td class="ps-4 fw-semibold text-primary" th:text="${prestamo.libro.codigo}">L01</td>
+                                        <td th:text="${prestamo.libro.titulo}">Título Libro</td>
+                                        <td class="fw-semibold text-success" th:text="${prestamo.usuario.codigo}">U01</td>
+                                        <td th:text="${prestamo.usuario.nombre}">Nombre Usuario</td>
+                                        <td th:text="${#temporals.format(prestamo.fechaPrestamo, 'dd/MM/yyyy')}">01/01/2026</td>
+                                        <td class="text-end pe-4">
+                                            <form th:action="@{/prestamos/devolver-desde-prestamos/{id}(id=${prestamo.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-success btn-sm btn-custom py-1">
+                                                    <i class="bi bi-arrow-return-left me-1"></i>Devolver (RF07)
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${prestamosActivos.isEmpty()}">
+                                        <td colspan="6" class="text-center py-5 text-muted">
+                                            <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                            No hay préstamos activos registrados.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

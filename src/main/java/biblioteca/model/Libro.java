@@ -1,12 +1,20 @@
-package biblioteca;
+package biblioteca.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Libro {
 
+    @Id
     private String codigo;
     private String titulo;
     private String autor;
     private String categoria;
     private int stock;
+
+    public Libro() {
+    }
 
     public Libro(String codigo, String titulo, String autor, String categoria, int stock) {
         this.codigo = codigo;
@@ -22,28 +30,52 @@ public class Libro {
 
     public void prestar() {
         if (stock <= 0) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("No hay stock disponible para prestar este libro");
         }
         stock--;
+    }
+
+    public void devolver() {
+        stock++;
     }
 
     public String getCodigo() {
         return codigo;
     }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public String getTitulo() {
         return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getAutor() {
         return autor;
     }
 
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
     public String getCategoria() {
         return categoria;
     }
 
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     public int getStock() {
         return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

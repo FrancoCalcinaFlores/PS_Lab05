@@ -1,0 +1,111 @@
+<div th:replace="~{layout :: layout(~{::section})}">
+    <section>
+        <div class="container-fluid px-0">
+            <!-- Summary Stats -->
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card card-custom gradient-card-1 text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1 small text-white-50">Libros Registrados</h6>
+                                <h3 class="mb-0 fw-bold" th:text="${totalLibrosCat}">0</h3>
+                            </div>
+                            <div class="fs-1 opacity-75">
+                                <i class="bi bi-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card card-custom gradient-card-2 text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1 small text-white-50">Copias Disponibles</h6>
+                                <h3 class="mb-0 fw-bold" th:text="${totalLibrosDisponibles}">0</h3>
+                            </div>
+                            <div class="fs-1 opacity-75">
+                                <i class="bi bi-check2-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card card-custom gradient-card-3 text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1 small text-white-50">Usuarios Activos</h6>
+                                <h3 class="mb-0 fw-bold" th:text="${totalUsuarios}">0</h3>
+                            </div>
+                            <div class="fs-1 opacity-75">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card card-custom bg-dark text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-uppercase mb-1 small text-white-50">Préstamos Activos</h6>
+                                <h3 class="mb-0 fw-bold" th:text="${prestamosActivos.size()}">0</h3>
+                            </div>
+                            <div class="fs-1 opacity-75 text-warning">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Loans (RF08) -->
+            <div class="card card-custom border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-semibold text-secondary">
+                        <i class="bi bi-clock-history me-2 text-warning"></i>Préstamos Activos (RF08)
+                    </h5>
+                    <a th:href="@{/prestamos}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                        <i class="bi bi-plus-lg me-1"></i>Nuevo Préstamo (RF06)
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Código Libro</th>
+                                    <th>Título del Libro</th>
+                                    <th>Código Usuario</th>
+                                    <th>Nombre del Usuario</th>
+                                    <th>Fecha de Préstamo</th>
+                                    <th class="text-end pe-4">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="prestamo : ${prestamosActivos}">
+                                    <td class="ps-4 fw-semibold text-primary" th:text="${prestamo.libro.codigo}">L01</td>
+                                    <td th:text="${prestamo.libro.titulo}">Título Libro</td>
+                                    <td class="fw-semibold text-success" th:text="${prestamo.usuario.codigo}">U01</td>
+                                    <td th:text="${prestamo.usuario.nombre}">Nombre Usuario</td>
+                                    <td th:text="${#temporals.format(prestamo.fechaPrestamo, 'dd/MM/yyyy')}">01/01/2026</td>
+                                    <td class="text-end pe-4">
+                                        <form th:action="@{/prestamos/devolver/{id}(id=${prestamo.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm btn-custom py-1">
+                                                <i class="bi bi-arrow-return-left me-1"></i>Devolver (RF07)
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr th:if="${prestamosActivos.isEmpty()}">
+                                    <td colspan="6" class="text-center py-5 text-muted">
+                                        <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                        No hay préstamos activos en este momento.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

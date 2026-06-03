@@ -1,75 +1,98 @@
-# Sistema de Biblioteca Inteligente
+# Sistema de Biblioteca Inteligente (Web MVP)
 Laboratorio 05 – Pruebas de Software (Caja Negra)
 
 ## Descripción General
 
-Este proyecto implementa un Sistema de Biblioteca Inteligente desarrollado en Java utilizando Maven como herramienta de construcción.
-El sistema permite gestionar un catálogo de libros, consultar disponibilidad, realizar préstamos y ejecutar búsquedas mediante una interfaz de consola.
+Este proyecto consiste en la refactorización de un sistema de gestión de biblioteca de consola a un **MVP web** moderno, construido en **Spring Boot 3.3.2** (Java 25) y persistido mediante una base de datos local **SQLite**.
 
-El proyecto incluye pruebas unitarias automatizadas orientadas a Caja Negra, aplicando las técnicas de:
-- Partición de Equivalencia (PE)
-- Análisis de Valores Límite (AVL)
+El sistema permite gestionar de manera visual e interactiva el catálogo de libros, los usuarios y el flujo de préstamos/devoluciones.
 
-La validación y verificación del sistema será realizada por un equipo externo.
+El proyecto incluye pruebas unitarias orientadas a Caja Negra (PE y AVL) para la lógica del servicio de negocio.
 
 ---
 
-## Estructura del Proyecto
+## Estructura del Proyecto Refactorizado
 
+```text
 PS_Lab05/
 ├── src/
-│   ├── main/java/biblioteca/
-│   └── test/java/biblioteca/
+│   ├── main/
+│   │   ├── java/biblioteca/
+│   │   │   ├── Application.java             # Clase de arranque Spring Boot
+│   │   │   ├── config/                      # (Opcional) Configuraciones del sistema
+│   │   │   ├── controller/                  # Controladores Spring MVC
+│   │   │   ├── model/                       # Entidades JPA (Libro, Usuario, Prestamo)
+│   │   │   ├── repository/                  # Repositorios JPA
+│   │   │   └── service/                     # Lógica de Negocio (BibliotecaService)
+│   │   └── resources/
+│   │       ├── templates/                   # Vistas Thymeleaf (Bootstrap 5)
+│   │       │   ├── layout.html              # Plantilla base y diseño común
+│   │       │   ├── index.html               # Dashboard y Préstamos Activos
+│   │       │   ├── libros.html              # Catálogo, registro y eliminación
+│   │       │   ├── usuarios.html            # Registro y búsqueda de usuarios
+│   │       │   └── prestamos.html           # Registro de préstamos
+│   │       └── application.properties       # Configuración de SQLite y Hibernate
+│   └── test/
+│       └── java/biblioteca/
+│           └── service/
+│               └── BibliotecaServiceTest.java # Pruebas unitarias de PE y AVL (JUnit 5)
 ├── pom.xml
 ├── README.md
 └── REQUIREMENTS.md
+```
 
 ---
 
 ## Requisitos Previos
 
-- Java JDK 8 o superior
+- Java JDK 17 o superior (Recomendado Java 25)
 - Apache Maven
-- Sistema operativo compatible con Java
+- Navegador Web moderno
 
-Verificación:
-
-java -version  
+Verificación de entorno:
+```bash
+java -version
 mvn -version
+```
 
 ---
 
 ## Compilación del Proyecto
 
-mvn compile
+Para compilar todo el proyecto y empaquetar los artefactos:
+```bash
+mvn clean compile
+```
 
 ---
 
 ## Ejecución de la Aplicación
 
-mvn exec:java
+Para iniciar el servidor local embebido (Tomcat) en el puerto `8080`:
+```bash
+mvn spring-boot:run
+```
 
-La aplicación se ejecuta por consola y permite:
-- Visualizar el catálogo de libros
-- Buscar libros por título
-- Prestar libros según disponibilidad
-- Consultar el total de libros disponibles
+Una vez ejecutado, abre tu navegador e ingresa a:
+👉 [http://localhost:8080/](http://localhost:8080/)
 
 ---
 
 ## Ejecución de Pruebas Unitarias
 
+Para correr las pruebas orientadas a Caja Negra (Particiones de Equivalencia y Análisis de Valores Límite):
+```bash
 mvn clean test
-
-Todas las pruebas deben ejecutarse sin errores.
+```
 
 ---
 
 Autores:
-CHILO HUILLCA, OSCAR RAUL
-CALCINA FLORES, FRANCO
-VENERO GUEVARA CHRISTIAN HENRY
-ALMANZA MAMANI,EDGAR RAUL
+- CHILO HUILLCA, OSCAR RAUL
+- CALCINA FLORES, FRANCO
+- VENERO GUEVARA, CHRISTIAN HENRY
+- ALMANZA MAMANI, EDGAR RAUL
 
 Curso: Pruebas de Software  
-Laboratorio: 05
+Laboratorio: 05  
+Universidad Nacional de San Agustín (UNSA)

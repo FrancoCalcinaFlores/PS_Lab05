@@ -1,0 +1,110 @@
+<div th:replace="~{layout :: layout(~{::section})}">
+    <section>
+        <div class="row g-4">
+            <!-- Registrar Libro Form (RF01) -->
+            <div class="col-lg-4">
+                <div class="card card-custom border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-semibold text-secondary">
+                            <i class="bi bi-journal-plus me-2 text-primary"></i>Registrar Libro (RF01)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/libros/registrar}" th:object="${nuevoLibro}" method="post">
+                            <div class="mb-3">
+                                <label for="codigo" class="form-label small fw-medium">Código del Libro</label>
+                                <input type="text" id="codigo" th:field="*{codigo}" class="form-control rounded-3" placeholder="Ej. L01" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="titulo" class="form-label small fw-medium">Título</label>
+                                <input type="text" id="titulo" th:field="*{titulo}" class="form-control rounded-3" placeholder="Ej. Clean Code" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="autor" class="form-label small fw-medium">Autor</label>
+                                <input type="text" id="autor" th:field="*{autor}" class="form-control rounded-3" placeholder="Ej. Robert C. Martin" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="categoria" class="form-label small fw-medium">Categoría</label>
+                                <input type="text" id="categoria" th:field="*{categoria}" class="form-control rounded-3" placeholder="Ej. Software" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="stock" class="form-label small fw-medium">Stock Inicial</label>
+                                <input type="number" id="stock" th:field="*{stock}" class="form-control rounded-3" min="0" placeholder="Ej. 5" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 btn-custom">
+                                <i class="bi bi-save me-1"></i>Registrar Libro
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buscar y Listar Libros (RF02, RF03) -->
+            <div class="col-lg-8">
+                <div class="card card-custom border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                        <h5 class="mb-0 fw-semibold text-secondary">
+                            <i class="bi bi-journal-text me-2 text-info"></i>Catálogo de Libros (RF02)
+                        </h5>
+                        <!-- Search Form (RF02) -->
+                        <form th:action="@{/libros}" method="get" class="d-flex align-items-center gap-2">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="query" th:value="${query}" class="form-control rounded-start-pill" placeholder="Buscar por título o autor..." style="min-width: 200px;">
+                                <button class="btn btn-primary rounded-end-pill px-3" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                            <a th:if="${query != null and !query.isEmpty()}" th:href="@{/libros}" class="btn btn-outline-secondary btn-sm rounded-circle" title="Limpiar búsqueda">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </form>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">Código</th>
+                                        <th>Título</th>
+                                        <th>Autor</th>
+                                        <th>Categoría</th>
+                                        <th>Stock</th>
+                                        <th>Estado</th>
+                                        <th class="text-end pe-4">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="libro : ${libros}">
+                                        <td class="ps-4 fw-semibold text-primary" th:text="${libro.codigo}">L01</td>
+                                        <td class="fw-semibold" th:text="${libro.titulo}">Clean Code</td>
+                                        <td th:text="${libro.autor}">Robert C. Martin</td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border" th:text="${libro.categoria}">Software</span>
+                                        </td>
+                                        <td th:text="${libro.stock}">2</td>
+                                        <td>
+                                            <span class="badge" th:classappend="${libro.disponible()} ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'" th:text="${libro.disponible()} ? 'Disponible' : 'Agotado'">Disponible</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <form th:action="@{/libros/eliminar/{codigo}(codigo=${libro.codigo})}" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de eliminar este libro?');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm btn-custom py-1">
+                                                    <i class="bi bi-trash3 me-1"></i>Eliminar (RF03)
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${libros.isEmpty()}">
+                                        <td colspan="7" class="text-center py-5 text-muted">
+                                            <i class="bi bi-journal-x fs-3 d-block mb-2"></i>
+                                            No se encontraron libros.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,35 +1,49 @@
-# Requisitos del Sistema
-Sistema de Biblioteca Inteligente
+# Requisitos del Sistema - Biblioteca Inteligente Web
 
-## Requisitos Funcionales
+## Requisitos Funcionales (RF)
 
-1. Mostrar un catálogo de libros con código, título, autor, categoría y stock.
-2. Permitir la búsqueda de libros por texto parcial.
-3. Permitir el préstamo de libros únicamente si existe stock disponible.
-4. Mostrar el total de libros disponibles.
-5. Todas las interacciones se realizan mediante consola.
-6. El sistema debe incluir pruebas unitarias orientadas a Caja Negra.
+- **RF01 Registrar Libro**: Permite almacenar un libro nuevo especificando código (único y obligatorio), título, autor, categoría y stock (entero no negativo).
+- **RF02 Buscar Libro**: Permite buscar libros a través de coincidencias de texto parcial en el título o autor.
+- **RF03 Eliminar Libro**: Permite remover un libro del catálogo por su código. Solo se permite la eliminación si el libro no posee préstamos activos.
+- **RF04 Registrar Usuario**: Permite registrar a un lector especificando un código (único y obligatorio), nombre completo y correo electrónico.
+- **RF05 Buscar Usuario**: Permite buscar usuarios mediante texto parcial que coincida con su nombre o código.
+- **RF06 Registrar Préstamo**: Permite prestar un libro a un usuario. Verifica la existencia de ambos y que el libro cuente con stock disponible. Al confirmarse, decrementa el stock en 1 y crea un registro de préstamo activo.
+- **RF07 Registrar Devolución**: Permite marcar un préstamo activo como devuelto. Al realizarse, incrementa el stock del libro respectivo en 1 y guarda la fecha de devolución.
+- **RF08 Listar Préstamos Activos**: Muestra en pantalla todos los préstamos que aún no han sido devueltos.
 
-## Requisitos No Funcionales
+---
 
-1. El sistema debe ejecutarse en Java 8 o superior.
-2. El sistema debe construirse mediante Maven.
-3. El sistema no debe requerir base de datos ni servicios externos.
-4. El código debe ser claro y mantenible.
+## Requisitos No Funcionales (RNF)
 
-## Requisitos de Pruebas
+- **RNF01 Interfaz Gráfica**: Interfaz web moderna responsiva basada en HTML5, CSS3, Bootstrap 5 y Thymeleaf.
+- **RNF02 Persistencia**: Base de datos relacional integrada de tipo SQLite (`biblioteca.db`).
+- **RNF03 Backend**: Spring Boot 3.3.2 (Java 17+ / Java 25).
+- **RNF04 Desempeño**: Respuestas rápidas en local (< 100ms) y arquitectura desacoplada basada en el patrón MVC.
 
-1. Aplicar Partición de Equivalencia (PE).
-2. Aplicar Análisis de Valores Límite (AVL).
-3. Todas las pruebas deben ejecutarse automáticamente.
-4. Las pruebas deben pasar sin errores.
+---
 
-## Dependencias
+## Especificación de Pruebas Unitarias (Caja Negra)
 
-- JDK 8 o superior
-- Apache Maven
-- JUnit 5
+### 1. Partición de Equivalencia (PE)
 
-## Observaciones
+| Caso de Prueba | Entrada | Salida Esperada | Tipo |
+| :--- | :--- | :--- | :--- |
+| Registrar libro con código único | Libro con datos completos y código L100 | Registro exitoso, retorna el libro | Válido |
+| Registrar libro con código duplicado | Código L01 (ya existente) | Lanza `IllegalArgumentException` | Inválido |
+| Registrar préstamo con stock disponible | Libro con Stock = 2 y Usuario existente | Préstamo exitoso, Stock final = 1 | Válido |
+| Registrar préstamo de usuario inexistente| Libro válido y Usuario "U99" | Lanza `IllegalArgumentException` | Inválido |
+| Registrar devolución de préstamo activo| Préstamo ID 10 (activo), Libro Stock = 1 | Devuelto con éxito, Stock final = 2 | Válido |
+| Registrar devolución de préstamo ya devuelto| Préstamo ID 10 (inactivo) | Lanza `IllegalStateException` | Inválido |
 
-La verificación y validación del sistema será realizada por un equipo distinto al desarrollador.
+### 2. Análisis de Valores Límite (AVL)
+
+| Variable/Parámetro | Valor Límite Evaluado | Salida Esperada | Comportamiento |
+| :--- | :--- | :--- | :--- |
+| Stock de Libro (Registro) | Stock = -1 | Lanza `IllegalArgumentException` | Límite inferior inválido |
+| Stock de Libro (Registro) | Stock = 0 | Registro exitoso, libro no prestable | Límite inferior válido |
+| Stock de Libro (Registro) | Stock = 1 | Registro exitoso, libro prestable | Límite inferior válido |
+| Stock de Libro (Préstamo) | Stock = 0 | Lanza `IllegalStateException` | Límite crítico (No prestable) |
+| Stock de Libro (Préstamo) | Stock = 1 | Préstamo exitoso, Stock final = 0 | Límite mínimo para préstamo |
+| Stock de Libro (Préstamo) | Stock = 2 | Préstamo exitoso, Stock final = 1 | Límite normal para préstamo |
+| Código de Libro (Vacío) | Código = "   " | Lanza `IllegalArgumentException` | Límite inferior de longitud |
+| Código de Libro (Nulo) | Código = `null` | Lanza `IllegalArgumentException` | Valor límite nulo |
