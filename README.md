@@ -3,7 +3,7 @@ Laboratorio 05 – Pruebas de Software (Caja Negra)
 
 ## Descripción General
 
-Este proyecto consiste en la refactorización de un sistema de gestión de biblioteca de consola a un **MVP web** moderno, construido en **Spring Boot 3.3.2** (Java 25) y persistido mediante una base de datos local **SQLite**.
+Este proyecto consiste en un sistema de gestión de biblioteca  **MVP web** moderno, construido en **Spring Boot 3.3.2** (Java 21) y persistido mediante una base de datos local **SQLite**.
 
 El sistema permite gestionar de manera visual e interactiva el catálogo de libros, los usuarios y el flujo de préstamos/devoluciones.
 
@@ -45,7 +45,7 @@ PS_Lab05/
 
 ## Requisitos Previos
 
-- Java JDK 17 o superior (Recomendado Java 25)
+- Java JDK 17 o superior (Recomendado Java 21)
 - Apache Maven
 - Navegador Web moderno
 

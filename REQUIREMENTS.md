@@ -15,10 +15,9 @@
 
 ## Requisitos No Funcionales (RNF)
 
-- **RNF01 Interfaz Gráfica**: Interfaz web moderna responsiva basada en HTML5, CSS3, Bootstrap 5 y Thymeleaf.
-- **RNF02 Persistencia**: Base de datos relacional integrada de tipo SQLite (`biblioteca.db`).
-- **RNF03 Backend**: Spring Boot 3.3.2 (Java 17+ / Java 25).
-- **RNF04 Desempeño**: Respuestas rápidas en local (< 100ms) y arquitectura desacoplada basada en el patrón MVC.
+- **RNF01 Autonomía de infraestructura**: No requiere servicios externos ni servidores de base de datos. SQLite es la única dependencia de almacenamiento, embebida directamente en la aplicación.
+- **RNF02 Usabilidad web responsiva**: La interfaz se adapta a distintos tamaños de pantalla mediante Bootstrap 5.3.3, con sidebar fija, scroll independiente y layout flexible.
+- **RNF03 Mantenibilidad y experiencia de usuario consistente**: Código organizado en capas controller/service/repository.
 
 ---
 
