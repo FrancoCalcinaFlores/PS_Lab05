@@ -11,7 +11,7 @@ El proyecto incluye pruebas unitarias orientadas a Caja Negra (PE y AVL) para la
 
 ---
 
-## Estructura del Proyecto Refactorizado
+## Estructura del Proyecto
 
 ```text
 PS_Lab05/
